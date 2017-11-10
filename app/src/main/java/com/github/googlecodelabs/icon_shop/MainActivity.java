@@ -33,6 +33,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.FirebaseAnalytics.Event;
+import com.google.firebase.analytics.FirebaseAnalytics.Param;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -124,6 +127,10 @@ public class MainActivity extends AppCompatActivity
 
     private void onProfessionSelected(MenuItem item) {
         final String profession = item.getTitle().toString();
+
+        FirebaseAnalytics analytics = FirebaseAnalytics.getInstance( this );
+        analytics.setUserProperty( "profession", profession );
+
         AsyncTask<Void, Void, Void> save = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
