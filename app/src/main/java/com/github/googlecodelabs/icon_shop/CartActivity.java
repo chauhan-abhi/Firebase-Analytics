@@ -29,6 +29,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.FirebaseAnalytics.Event;
+import com.google.firebase.analytics.FirebaseAnalytics.Param;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -62,6 +65,11 @@ public class CartActivity extends AppCompatActivity {
             public void onClick(final View view) {
                 Snackbar.make(view, "Checking out...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Bundle params = new Bundle();
+                params.putLong( Param.VALUE, getCartBalance());
+                FirebaseAnalytics.getInstance( CartActivity.this ).logEvent( Event.ECOMMERCE_PURCHASE, params );
+
+
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override

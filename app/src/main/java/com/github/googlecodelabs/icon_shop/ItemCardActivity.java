@@ -26,6 +26,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.FirebaseAnalytics.Event;
+import com.google.firebase.analytics.FirebaseAnalytics.Param;
 
 public class ItemCardActivity extends AppCompatActivity {
     public static final String INTENT_EXTRA_ITEM = "item";
@@ -55,14 +58,28 @@ public class ItemCardActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 NavUtils.navigateUpFromSameTask(ItemCardActivity.this);
+
+
                             }
                         });
+
                 ok.setCallback(new Snackbar.Callback() {
                     @Override
                     public void onDismissed(Snackbar snackbar, int event) {
                         NavUtils.navigateUpFromSameTask(ItemCardActivity.this);
                     }
                 });
+                Bundle params = new Bundle();
+
+                params.putString( Param.ITEM_ID, mItem.mName );
+
+                params.putString( Param.ITEM_CATEGORY, "icon" );
+
+                params.putLong( Param.VALUE, mItem.mPrice );
+
+                FirebaseAnalytics analytics = FirebaseAnalytics.getInstance( ItemCardActivity.this );
+
+                analytics.logEvent( Event.ADD_TO_CART, params );
                 ok.show();
             }
         });
